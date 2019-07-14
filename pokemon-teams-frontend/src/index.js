@@ -40,12 +40,19 @@ document.addEventListener("DOMContentLoaded", function(){
         .then(resp => resp.json())
         .then(data => {
           // console.log(e.target.dataset.trainerId)
-          let ulTag = e.target.parentElement.parentElement
+          let ulTag = e.target.parentElement
           ulTag.innerHTML +=
-          `<li>
-          ${data.nickname} (${data.species})
+          `<li> ${data.nickname} (${data.species})
           <button class="release" data-pokemon-id=${data.id}>Release</button>
           </li>`
+        })
+      }
+      else if (e.target.tagName === "BUTTON" && e.target.className === "release") {
+        fetch(`${POKEMONS_URL}/${e.target.dataset.pokemonId}`, {
+          method: "DELETE"
+        })
+        .then(data => {
+          e.target.parentElement.remove()
         })
       }
     })
